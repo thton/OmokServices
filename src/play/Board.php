@@ -3,28 +3,23 @@ class Board {
     
 	public $grid = array (
 			array ()
-			/*array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-			array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)  */
 	);
+	public $strat;
+	public $isWin;
+	public $isDraw;
+	public $row = array();
 	
-	function __construct(){
+	
+	function __construct($strat){
 	    for($i = 0; $i < 15; $i++) {
 	        for($j = 0; $j < 15; $j++) {
 	            $this->grid[$i][$j] = 0;
 	        }
 	    }
+	    $this->strat = $strat;
+	    $this->isWin = false;
+	    $this->isDraw = false;
+	    
 	}
 
 	function set($x,$y,$player){

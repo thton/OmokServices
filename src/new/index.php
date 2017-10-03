@@ -12,9 +12,9 @@ if(!$Strats){
 elseif($Strats == "Smart" || $Strats == "Random"){
 	$response = true;
 	$pid = uniqid();
-	$game = new Board();
+	$game = new Board($Strats);
 	$pidFile = fopen("../writeable/$pid","w");
-	fwrite($pidFile, json_encode($game->grid));
+	fwrite($pidFile, json_encode($game));
 	fclose($pidFile);
 }
 

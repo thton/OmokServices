@@ -4,6 +4,8 @@ require('.\Board.php');
 
 $play_pid = $_GET['pid'];
 $player_move = explode(",",$_GET['move']);
+$playerx = (int)$player_move[0];
+$playery = (int)$player_move[1];
 
 if($play_pid == NULL || $player_move == NULL){
 	$response = false;
@@ -26,10 +28,10 @@ else{
 
 	$response = true;
 	
-	$board->set((int)$player_move[0],(int)$player_move[1],true);
-	$board->isWin = $board->checkWin((int)$player_move[0], (int)$player_move[1],true);
+	$board->set($playerx,$playery,true);
+	$board->isWin = $board->checkWin($playerx,$playery,true);
 	$board->isDraw = $board->checkDraw();
-	$ack_move = array("x"=>(int)$player_move[0],"y"=>(int)$player_move[1],"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
+	$ack_move = array("x"=>$playerx,"y"=>$playery,"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
 	
 	if($board-> isWin == true||$board->isDraw == true){
 		echo json_encode(array("response"=>$response,"ack_move"=>$ack_move));
@@ -44,12 +46,12 @@ else{
 				break;
 			}
 		}
+	}
 	$board->set($computerx,$computery,false);
 	$board->isWin = $board->checkWin($computerx, $computery, false);
 	$board->isDraw = $board->checkDraw();
 	$move = array("x"=>$computerx,"y"=>$computery,"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
 
-	}
 	#Writing new game info into the same gamefile with the pid name
 	$pidFile = fopen("../writeable/$play_pid","w");
 	fwrite($pidFile, json_encode($board));

@@ -24,8 +24,6 @@ class Board {
 		return $grid [$y] [$x];
 	}
 	function checkWin($x, $y, $player) {
-		#$xstart = $x;
-		#$ystart = $y;
 		$token = $player == true ? 1 : 2;
 		$counter = 1;
 		

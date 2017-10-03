@@ -3,7 +3,7 @@
 require('.\Board.php');
 
 $play_pid = $_GET['pid'];
-$player_move = $_GET['move'];
+$player_move = explode(",",$_GET['move']);
 
 if($play_pid == NULL || $player_move == NULL){
 	$response = false;
@@ -13,7 +13,7 @@ if($play_pid == NULL || $player_move == NULL){
 }
 
 else{
-
+	#Reading game data from a json encoded file
 	$pidFile = fopen("../writeable/$play_pid", "r");
 	$game = fread($pidFile, filesize("../writeable/$play_pid"));
 	fclose($pidFile);
@@ -26,25 +26,35 @@ else{
 
 	$response = true;
 	
-	$board->set((int)$player_move[0],(int)$player_move[2],true);
+	$board->set((int)$player_move[0],(int)$player_move[1],true);
+	$board->isWin = $board->checkWin((int)$player_move[0], (int)$player_move[1],true);
+	$board->isDraw = $board->checkDraw();
+	$ack_move = array("x"=>(int)$player_move[0],"y"=>(int)$player_move[1],"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
 	
-	$ack_move = array("x"=>(int)$player_move[0],"y"=>(int)$player_move[2],"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
-
+	if($board-> isWin == true||$board->isDraw == true){
+		echo json_encode(array("response"=>$response,"ack_move"=>$ack_move));
+		exit();
+	}
 	
 	if($board->strat == "Random"){
-		
-	$computerx = mt_rand(0,14);
-	$computery = mt_rand(0,14);
+		while(true){
+			$computerx = mt_rand(0,14);
+			$computery = mt_rand(0,14);
+			if($board->grid[$computery][$computerx] == 0){
+				break;
+			}
+		}
 	$board->set($computerx,$computery,false);
-	
+	$board->isDraw = $board->checkDraw();
 	$move = array("x"=>$computerx,"y"=>$computery,"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
 
 	}
-	
+	#Writing new game info into the same gamefile with the pid name
 	$pidFile = fopen("../writeable/$play_pid","w");
 	fwrite($pidFile, json_encode($board));
 	fclose($pidFile);
-
+	
+	#response sent to api
 	echo json_encode(array("response"=>$response,"ack_move"=>$ack_move,"move"=>$move));
 }
 

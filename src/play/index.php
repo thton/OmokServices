@@ -1,6 +1,7 @@
 <?php
 
 require('.\Board.php');
+require('.\smartMove.php');
 
 $play_pid = $_GET['pid'];
 $player_move = explode(",",$_GET['move']);
@@ -46,6 +47,13 @@ else{
 				break;
 			}
 		}
+	}
+	elseif($board->strat == "Smart"){
+		$nextMove = new smartMove($board);
+		$nextMove->callAll();
+		$nextMoveArray = $nextMove->makeMove();
+		$computerx = $nextMoveArray[0];
+		$computery = $nextMoveArray[1];
 	}
 	$board->set($computerx,$computery,false);
 	$board->isWin = $board->checkWin($computerx, $computery, false);

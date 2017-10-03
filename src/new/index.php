@@ -8,16 +8,16 @@ if(!$Strats){
 }
 
 elseif($Strats == "Smart" || $Strats == "Random"){
-	$response = "true";
+	$response = true;
 	$pid = uniqid();
 }
 
 else{
-	$response = "false";
+	$response = false;
 	$reason = "Unknown strategy";
 }
 
-if ($response == "false") {
+if ($response == false) {
 	$output = array("response"=>$response,"reason"=>$reason);
 	echo json_encode($output);
 }

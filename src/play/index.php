@@ -1,7 +1,5 @@
 <?php
 
-#require_once './Board.php';
-
 $play_pid = $_GET['pid'];
 $player_move = $_GET['move'];
 $isWin = false;
@@ -9,7 +7,7 @@ $isDraw = false;
 $row = array();
 if($play_pid == NULL || $player_move == NULL){
 	$response = false;
-	$reason = $play_pid==NULL ? 'Pid no specified' : 'Move not specified';
+	$reason = $play_pid==NULL ? 'Pid not specified' : 'Move not specified';
 	$output = array("response"=>$response,"reason"=>$reason);
 	echo json_encode($output);
 }

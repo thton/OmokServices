@@ -1,5 +1,7 @@
 <?php
 
+require('..\play\Board.php');
+
 $Strats = $_GET['strategy'];
 
 if(!$Strats){
@@ -10,6 +12,10 @@ if(!$Strats){
 elseif($Strats == "Smart" || $Strats == "Random"){
 	$response = true;
 	$pid = uniqid();
+	$game = new Board();
+	$pidFile = fopen("../writeable/$pid","w");
+	fwrite($pidFile, json_encode($game->grid));
+	fclose($pidFile);
 }
 
 else{
@@ -19,10 +25,9 @@ else{
 
 if ($response == false) {
 	$output = array("response"=>$response,"reason"=>$reason);
-	echo json_encode($output);
 }
 else{
 	$output = array("response"=>$response,"pid"=>$pid);
-	echo json_encode($output);
 }
+	echo json_encode($output);
 ?>

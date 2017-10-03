@@ -45,6 +45,7 @@ else{
 			}
 		}
 	$board->set($computerx,$computery,false);
+	$board->isWin = $board->checkWin($computerx, $computery, false);
 	$board->isDraw = $board->checkDraw();
 	$move = array("x"=>$computerx,"y"=>$computery,"isWin"=>$board->isWin,"isDraw"=>$board->isDraw,"row"=>$board->row);
 

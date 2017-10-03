@@ -30,10 +30,13 @@ class Board {
 		$counter = 1;
 		
 		// horizontal check
+		$k = 0;
 		for($i = $x; $i >= 0; $i --) {
 			if ($token == $this->grid [$y] [$i]) {
 				if ($i != $x) {
 					$counter ++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $y; $k++;
 				}
 			} else
 				break;
@@ -42,19 +45,29 @@ class Board {
 			if ($token == $this->grid [$y] [$i]) {
 				if ($i != $x) {
 					$counter ++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $y; $k++;
 				}
 			} else
 				break;
 		}
-		if ($counter == 5)
+		if ($counter == 5){
+			$this->row[$k] = $x; $k++;
+			$this->row[$k] = $y;
 			return true;
-		else
+		}
+		else{
 			$counter = 1;
+			$this->row = array();
+			$k = 0;
+		}
 		// vertical check
 		for($i = $y; $i >= 0; $i--){
 			if($token == $this->grid[$i][$x]){
 				if($i != $y){
 					$counter++;
+					$this->row[$k] = $x; $k++;
+					$this->row[$k] = $i; $k++;
 				}
 			}
 			else break;
@@ -63,16 +76,85 @@ class Board {
 			if($token == $this->grid[$i][$x]){
 				if($i != $y){
 					$counter++;
+					$this->row[$k] = $x; $k++;
+					$this->row[$k] = $i; $k++;
 				}
 			}
 			else break;
 		}
 		
 		if($counter == 5){
+			$this->row[$k] = $x; $k++;
+			$this->row[$k] = $y;
 			return true;
 		}
-		else
+		else{
 			$counter = 1;
+			$this->row = array();
+			$k = 0;
+		}
+		#diagonal check upper left to lower right and vice versa
+		for($i = $x, $j = $y; $i >= 0 && $j >= 0; $i--, $j--){
+			if($token == $this->grid[$j][$i]){
+				if($i != $x && $j != $y){
+					$counter++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $j; $k++;
+				}
+			}
+			else break;
+		}
+		for($i = $x, $j = $y; $i <= 14 && $j <= 14; $i++, $j++){
+			if($token == $this->grid[$j][$i]){
+				if($i != $x && $j != $y){
+					$counter++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $j; $k++;
+				}
+			}
+			else break;
+		}
+		if($counter == 5){
+			$this->row[$k] = $x; $k++;
+			$this->row[$k] = $y;
+			return true;
+		}
+		else{
+			$counter = 1;
+			$this->row = array();
+			$k = 0;
+		}
+		#diagonal check lower left to upper right and vice versa
+		for($i = $x, $j = $y; $i >= 0 && $j <= 14; $i--, $j++){
+			if($token == $this->grid[$j][$i]){
+				if($i != $x && $j != $y){
+					$counter++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $j; $k++;
+				}
+			}
+			else break;
+		}
+		for($i = $x, $j = $y; $i <= 14 && $j >= 0; $i++, $j--){
+			if($token == $this->grid[$j][$i]){
+				if($i != $x && $j != $y){
+					$counter++;
+					$this->row[$k] = $i; $k++;
+					$this->row[$k] = $j; $k++;
+				}
+			}
+			else break;
+		}
+		if($counter == 5){
+			$this->row[$k] = $x; $k++;
+			$this->row[$k] = $y;
+			return true;
+		}
+		else{
+			$counter = 1;
+			$this->row = array();
+			$k = 0;
+		}
 		
 		return false;
 	}

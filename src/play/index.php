@@ -1,7 +1,8 @@
 <?php
-
+#Toan Ton
+#80535761
+#Progamming Languages Lab 1
 require('.\Board.php');
-require('.\smartMove.php');
 
 $play_pid = $_GET['pid'];
 $player_move = explode(",",$_GET['move']);
@@ -11,6 +12,13 @@ $playery = (int)$player_move[1];
 if($play_pid == NULL || $player_move == NULL){
 	$response = false;
 	$reason = $play_pid==NULL ? 'Pid not specified' : 'Move not specified';
+	$output = array("response"=>$response,"reason"=>$reason);
+	echo json_encode($output);
+}
+
+elseif($playerx >= 15 || $playery >= 15){
+	$response = false;
+	$reason = $playerx>= 15 ? 'Invalid x coordinate, ' . $playerx : 'Invalid y coordinate, ' . $playery;
 	$output = array("response"=>$response,"reason"=>$reason);
 	echo json_encode($output);
 }
@@ -28,7 +36,7 @@ else{
 	$board->row = $gamedata->row;
 
 	$response = true;
-	
+	#player move
 	$board->set($playerx,$playery,true);
 	$board->isWin = $board->checkWin($playerx,$playery,true);
 	$board->isDraw = $board->checkDraw();
@@ -38,7 +46,7 @@ else{
 		echo json_encode(array("response"=>$response,"ack_move"=>$ack_move));
 		exit();
 	}
-	
+	#random and smart strats
 	if($board->strat == "Random"){
 		while(true){
 			$computerx = mt_rand(0,14);
@@ -49,12 +57,11 @@ else{
 		}
 	}
 	elseif($board->strat == "Smart"){
-		$nextMove = new smartMove($board);
-		$nextMove->callAll();
-		$nextMoveArray = $nextMove->makeMove();
-		$computerx = $nextMoveArray[0];
-		$computery = $nextMoveArray[1];
+		$nextMove = $board->checkMove();
+		$computerx = $nextMove[1];
+		$computery = $nextMove[0];
 	}
+	#computer move
 	$board->set($computerx,$computery,false);
 	$board->isWin = $board->checkWin($computerx, $computery, false);
 	$board->isDraw = $board->checkDraw();

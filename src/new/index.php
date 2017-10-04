@@ -1,5 +1,7 @@
 <?php
-
+#Toan Ton
+#80535761
+#Progamming Languages Lab 1
 require('..\play\Board.php');
 
 $Strats = $_GET['strategy'];
